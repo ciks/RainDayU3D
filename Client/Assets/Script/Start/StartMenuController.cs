@@ -12,6 +12,8 @@ public class StartMenuController : MonoBehaviour {
     private GameObject _registerPanel;
     [SerializeField]
     private GameObject _serverPanel;
+    [SerializeField]
+    private GameObject _selectCharacter;
 
     [SerializeField]
     private InputField _userNameInputLogin;
@@ -19,6 +21,8 @@ public class StartMenuController : MonoBehaviour {
     private InputField _passworkInputLogin;
     [SerializeField]
     private Text _userNameInputStart;
+    [SerializeField]
+    private Text _serverNameStart;
     [SerializeField]
     private InputField _userNameInputRegister;
     [SerializeField]
@@ -32,9 +36,12 @@ public class StartMenuController : MonoBehaviour {
     private GameObject _serverItemRed;
     [SerializeField]
     private GameObject _serverItemGreen;
+    [SerializeField]
+    private GameObject _serverSelect;
 
     public static string UserName;
     public static string Password;
+    public static ServerProperty ServerSceletInfo; 
 
     void Start()
     {
@@ -55,7 +62,8 @@ public class StartMenuController : MonoBehaviour {
     }
     public void OnEnterGameClick()
     {
-
+        _startPanel.SetActive(false);
+        _selectCharacter.SetActive(true);
     }
     //login event
     public void OnLoginClick()
@@ -120,4 +128,24 @@ public class StartMenuController : MonoBehaviour {
         }
      
     }
+    public void OnServerSelect(bool isSelect,GameObject go)
+    {
+        ServerSceletInfo = go.GetComponent<ServerProperty>();
+        if (isSelect)
+        {
+            _serverNameStart.text = ServerSceletInfo.GetName();
+            _serverPanel.SetActive(false);
+            _startPanel.SetActive(true);
+        }
+        else
+        {
+            var sp = go.GetComponent<ServerProperty>();
+            _serverSelect.GetComponent<ServerProperty>().SetData(sp.GetIp(), sp.GetName(), sp.GetCount());
+            _serverSelect.GetComponent<Image>().sprite = go.GetComponent<Image>().sprite;
+            _serverSelect.GetComponentInChildren<Text>().text = ServerSceletInfo.GetName();
+            _serverSelect.GetComponentInChildren<Text>().color = go.GetComponentInChildren<Text>().color;
+        }
+    }
+    //select Character
+    
 }
