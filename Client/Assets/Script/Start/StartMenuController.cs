@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class StartMenuController : MonoBehaviour {
+
+    public static StartMenuController Instance;
+
     [SerializeField]
     private GameObject _startPanel;
     [SerializeField]
@@ -39,10 +42,17 @@ public class StartMenuController : MonoBehaviour {
     [SerializeField]
     private GameObject _serverSelect;
 
+    [SerializeField]
+    private GameObject[] _selectCharacterArray;
+    private GameObject _characterSelect;
+
     public static string UserName;
     public static string Password;
     public static ServerProperty ServerSceletInfo; 
-
+   void Awake()
+    {
+        Instance = this;
+    }
     void Start()
     {
         InitServerList();
@@ -147,5 +157,15 @@ public class StartMenuController : MonoBehaviour {
         }
     }
     //select Character
-    
+    public void OnCharacterClick(GameObject go)
+    {
+        if (go == _characterSelect)
+            return;
+        iTween.ScaleTo(go, new Vector3(1.5f, 1.5f, 1.5f), 0.5f);
+        if (_characterSelect != null)
+        {
+            iTween.ScaleTo(_characterSelect, new Vector3(1f, 1f, 1f), 0.5f);
+        }
+        _characterSelect = go;
+    }
 }
